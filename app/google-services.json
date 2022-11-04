@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "603756959934",
+    "project_id": "instagram-curso-a2d32",
+    "storage_bucket": "instagram-curso-a2d32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603756959934:android:54b64eb9c848b24ef9e6ef",
+        "android_client_info": {
+          "package_name": "com.example.instagram_curso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603756959934-j8f6hcts2r9ql7p904n68hcpprhm4jqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instagram_curso",
+            "certificate_hash": "387e5d73fd729044a943759166ab639be4597ce1"
+          }
+        },
+        {
+          "client_id": "603756959934-l03gc19f4t6fc175r5tlminsnul0nio7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5jVScglONwDFqqy4q3YxUk7RwoKsms-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603756959934-l03gc19f4t6fc175r5tlminsnul0nio7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
