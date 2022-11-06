@@ -11,10 +11,11 @@
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="60dp"
+        android:layout_marginTop="150dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/editNomeCadastro"
+        app:layout_constraintBottom_toTopOf="@+id/editCadastroNome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -37,10 +38,10 @@
         app:layout_constraintBottom_toTopOf="@+id/editCadastroSenha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNomeCadastro" />
+        app:layout_constraintTop_toBottomOf="@+id/editCadastroNome" />
 
     <EditText
-        android:id="@+id/editNomeCadastro"
+        android:id="@+id/editCadastroNome"
         android:layout_width="363dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -93,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editCadastroSenha" />
 
     <ProgressBar
-        android:id="@+id/progressLogin"
+        android:id="@+id/progressCadastro"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
