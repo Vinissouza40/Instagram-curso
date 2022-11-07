@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="fonte" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="fontFamily">@font/fonte</item>
+        <item name="android:textSize">36sp</item>
+
+
+
+
+    </style>
+
+
+
+</resources>

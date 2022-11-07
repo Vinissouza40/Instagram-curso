@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Instagram-curso</string>
+    <string name="app_name">Instagram</string>
+    <string name="TituloToolbar">Instagram</string>
 </resources>
