@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
+import com.example.instagram_curso.helper.Base64Custom;
 import com.example.instagram_curso.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +56,7 @@ public class CadastroActivity extends AppCompatActivity {
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
                             cadastrar(usuario);
+
                         } else {
                             Toast.makeText(CadastroActivity.this, "Preencha a Senha", Toast.LENGTH_SHORT).show();
                         }
@@ -83,6 +85,15 @@ public class CadastroActivity extends AppCompatActivity {
 
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     finish();
+
+                                    try {
+                                        String identificadorUsuario = Base64Custom.codificarBase64(usuario.getEmail());
+                                        usuario.setId(identificadorUsuario);
+                                        usuario.salvar();
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
                                     progressBar.setVisibility(View.GONE);
 
