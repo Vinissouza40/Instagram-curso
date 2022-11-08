@@ -13,7 +13,8 @@
             android:theme="@style/Theme.InstagramLogin"></activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.LoginActivity"
-            android:theme="@style/Theme.InstagramLogin">
+            android:theme="@style/Theme.InstagramLogin"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
