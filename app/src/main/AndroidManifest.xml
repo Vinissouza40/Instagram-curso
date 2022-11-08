@@ -9,12 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instagramcurso">
-        <activity android:name=".activity.CadastroActivity"
-            android:theme="@style/Theme.InstagramLogin"></activity>
+        <activity android:name=".activity.EditarPerfilActivity"></activity>
+        <activity
+            android:name=".activity.CadastroActivity"
+            android:theme="@style/Theme.InstagramLogin" />
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.LoginActivity"
-            android:theme="@style/Theme.InstagramLogin"
-            android:exported="true">
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.InstagramLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
