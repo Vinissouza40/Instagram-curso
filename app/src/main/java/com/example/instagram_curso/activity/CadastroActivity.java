@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
+import com.example.instagram_curso.config.UsuarioFirebase;
 import com.example.instagram_curso.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -84,6 +85,9 @@ public class CadastroActivity extends AppCompatActivity {
                                         String idUsuario = task.getResult().getUser().getUid();
                                         usuario.setId(idUsuario);
                                         usuario.salvar();
+
+                                        UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
+
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso!!", Toast.LENGTH_SHORT).show();
 
@@ -106,13 +110,13 @@ public class CadastroActivity extends AppCompatActivity {
                                     } catch (FirebaseAuthInvalidCredentialsException e) {
                                         erroExcecao = "Por favor, digite um e-mail válido";
                                     } catch (FirebaseAuthUserCollisionException e) {
-                                        erroExcecao = "Este conta já foi cadastrada";
+                                        erroExcecao = "essa conta já foi cadastrada";
                                     } catch (Exception e) {
                                         erroExcecao = "ao cadastrar usuário: " + e.getMessage();
                                         e.printStackTrace();
                                     }
 
-                                    Toast.makeText(CadastroActivity.this, "Erro" + erroExcecao, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CadastroActivity.this, "Erro " + erroExcecao, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
