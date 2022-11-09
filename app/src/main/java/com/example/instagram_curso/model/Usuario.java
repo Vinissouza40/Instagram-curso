@@ -21,7 +21,8 @@ public class Usuario implements Serializable {
 
     public void salvar() {
         database = ConfiguracaoFirebase.getFirebaseDatabase();
-        database.child("usuarios").child(this.id).setValue(this);
+        DatabaseReference usuariosRef = database.child("usuarios").child(getId());
+        usuariosRef.setValue(this);
     }
 
     public String getId() {
@@ -57,6 +58,7 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    @Exclude
     public String getCaminhoFoto() {
         return caminhoFoto;
     }

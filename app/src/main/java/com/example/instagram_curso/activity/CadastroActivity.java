@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
-import com.example.instagram_curso.helper.Base64Custom;
 import com.example.instagram_curso.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -80,16 +79,17 @@ public class CadastroActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso!!", Toast.LENGTH_SHORT).show();
-
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                    finish();
 
                                     try {
-                                        String identificadorUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-                                        usuario.setId(identificadorUsuario);
+                                        String idUsuario = task.getResult().getUser().getUid();
+                                        usuario.setId(idUsuario);
                                         usuario.salvar();
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso!!", Toast.LENGTH_SHORT).show();
+
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        finish();
+
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
