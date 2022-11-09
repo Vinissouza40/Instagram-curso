@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instagramcurso">
-        <activity android:name=".activity.EditarPerfilActivity"></activity>
+        <activity android:name=".activity.EditarPerfilActivity" android:parentActivityName=".activity.MainActivity"></activity>
         <activity
             android:name=".activity.CadastroActivity"
             android:theme="@style/Theme.InstagramLogin" />
