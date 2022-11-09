@@ -19,8 +19,10 @@ import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
 import com.example.instagram_curso.config.UsuarioFirebase;
 import com.example.instagram_curso.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
@@ -39,6 +41,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private Usuario usuarioLogado;
     private static final int SELECAO_GALERIA = 200;
     private StorageReference storageRef;
+    private String identificadorUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,8 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
         usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
         storageRef = ConfiguracaoFirebase.getFirebaseStorage();
+        identificadorUsuario = UsuarioFirebase.getIdentificadorUsuario();
+
         Toolbar toolbar = findViewById(R.id.toolbarPerfil);
         toolbar.setTitle("Editar perfil");
         setSupportActionBar(toolbar);
@@ -107,9 +112,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
                     byte[] dadosImagem = baos.toByteArray();
 
-                    StorageReference imagemRef = storageRef.child("imagens")
+                   final StorageReference imagemRef = storageRef
+                            .child("imagens")
                             .child("perfil")
-                            .child("<id-usuario>.jpeg");
+                            .child(identificadorUsuario + ".jpeg");
 
                     UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -120,6 +126,14 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Uri url = task.getResult();
+                                    atualizarFotoUsuario(url);
+                                }
+                            });
+
                             Toast.makeText(EditarPerfilActivity.this, "Sucesso ao fazer upload da imagem!!!", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -128,6 +142,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void atualizarFotoUsuario(Uri url) {
+
     }
 
     public void inicializarComponentes() {
