@@ -1,5 +1,6 @@
 package com.example.instagram_curso.config;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,31 @@ public class UsuarioFirebase {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (!task.isSuccessful()) {
                         Log.d("Perfil", "Erro ao atualizar perfil.");
+                    }
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    public static void atualizarFotoUsuario(Uri url) {
+
+        try {
+            FirebaseUser usuarioLogado = getUsuarioAtual();
+
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder().
+                    setPhotoUri(url)
+                    .build();
+
+            usuarioLogado.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (!task.isSuccessful()) {
+                        Log.d("Perfil", "Erro ao atualizar a foto de perfil.");
                     }
                 }
             });

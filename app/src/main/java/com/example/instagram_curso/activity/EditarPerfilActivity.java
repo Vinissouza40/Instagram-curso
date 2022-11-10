@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
 import com.example.instagram_curso.config.UsuarioFirebase;
@@ -64,6 +65,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
         FirebaseUser usuarioPerfil = UsuarioFirebase.getUsuarioAtual();
         editNomePerfil.setText(usuarioPerfil.getDisplayName());
         editEmailPerfil.setText(usuarioPerfil.getEmail());
+
+        Uri url = usuarioPerfil.getPhotoUrl();
+        if (url != null) {
+            Glide.with(EditarPerfilActivity.this).load(url).into(imageEditarPerfil);
+        } else {
+            imageEditarPerfil.setImageResource(R.drawable.padrao);
+        }
 
         buttonSalvarAlteracoes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +153,12 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     private void atualizarFotoUsuario(Uri url) {
+        UsuarioFirebase.atualizarFotoUsuario(url);
 
+        usuarioLogado.setCaminhoFoto(url.toString());
+        usuarioLogado.atualizar();
+
+        Toast.makeText(EditarPerfilActivity.this, "Sua foto foi atualizada", Toast.LENGTH_SHORT).show();
     }
 
     public void inicializarComponentes() {
