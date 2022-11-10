@@ -16,6 +16,9 @@ public class Usuario implements Serializable {
     private String senha;
     private String caminhoFoto;
     private DatabaseReference database;
+    private int seguidores = 0;
+    private int seguindo = 0;
+    private int postagens = 0;
 
     public Usuario() {
 
@@ -41,6 +44,9 @@ public class Usuario implements Serializable {
         usuarioMap.put("nome", getNome());
         usuarioMap.put("id", getId());
         usuarioMap.put("caminhoFoto", getCaminhoFoto());
+        usuarioMap.put("seguidores", getSeguidores());
+        usuarioMap.put("seguindo", getSeguindo());
+        usuarioMap.put("postagens", getPostagens());
 
         return usuarioMap;
 
@@ -87,4 +93,27 @@ public class Usuario implements Serializable {
         this.caminhoFoto = caminhoFoto;
     }
 
+    public int getSeguidores() {
+        return seguidores;
+    }
+
+    public void setSeguidores(int seguidores) {
+        this.seguidores = seguidores;
+    }
+
+    public int getSeguindo() {
+        return seguindo;
+    }
+
+    public void setSeguindo(int seguindo) {
+        this.seguindo = seguindo;
+    }
+
+    public int getPostagens() {
+        return postagens;
+    }
+
+    public void setPostagens(int postagens) {
+        this.postagens = postagens;
+    }
 }

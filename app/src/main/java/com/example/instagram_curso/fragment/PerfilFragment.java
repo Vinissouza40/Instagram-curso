@@ -46,7 +46,7 @@ public class PerfilFragment extends Fragment {
 
         gridViewPerfil = view.findViewById(R.id.grifViewPerfil);
         progressBar = view.findViewById(R.id.progressBarPerfil);
-        imagePerfil = view.findViewById(R.id.imageEditarPerfil);
+        imagePerfil = view.findViewById(R.id.imagePerfil);
         textPublicacoes = view.findViewById(R.id.textPublicacoes);
         textSeguidores = view.findViewById(R.id.textSeguidores);
         textSeguindo = view.findViewById(R.id.textSeguindo);
@@ -61,5 +61,7 @@ public class PerfilFragment extends Fragment {
         });
 
         return view;
+
+
     }
 }

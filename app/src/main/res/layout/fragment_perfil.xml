@@ -7,7 +7,7 @@
     tools:context=".fragment.PerfilFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageEditarPerfil"
+        android:id="@+id/imagePerfil"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
@@ -159,7 +159,7 @@
         android:layout_marginTop="4dp"
         android:text="Nome "
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageEditarPerfil"
-        app:layout_constraintStart_toStartOf="@+id/imageEditarPerfil"
-        app:layout_constraintTop_toBottomOf="@+id/imageEditarPerfil" />
+        app:layout_constraintEnd_toEndOf="@+id/imagePerfil"
+        app:layout_constraintStart_toStartOf="@+id/imagePerfil"
+        app:layout_constraintTop_toBottomOf="@+id/imagePerfil" />
 </androidx.constraintlayout.widget.ConstraintLayout>
