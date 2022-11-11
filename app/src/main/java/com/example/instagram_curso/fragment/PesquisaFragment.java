@@ -42,6 +42,8 @@ public class PesquisaFragment extends Fragment {
     private DatabaseReference usuariosRef;
     private AdapterPesquisa adapterPesquisa;
 
+
+
     public PesquisaFragment() {
 
     }

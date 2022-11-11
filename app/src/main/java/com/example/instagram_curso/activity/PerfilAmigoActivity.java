@@ -6,17 +6,23 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_curso.R;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
+import com.example.instagram_curso.config.UsuarioFirebase;
 import com.example.instagram_curso.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,17 +32,27 @@ public class PerfilAmigoActivity extends AppCompatActivity {
     private Button buttonAcaoPerfil;
     private TextView textNome;
     private CircleImageView imagePerfil;
+    private DatabaseReference firebaseRef;
     private DatabaseReference usuarioRef;
     private DatabaseReference usuarioAmigoRef;
+    private DatabaseReference usuarioLogadoRef;
+    private DatabaseReference seguidoresRef;
     private ValueEventListener valueEventListenerPerfilAmigo;
     private TextView textPublicacoes, textSeguidores, textSeguindo;
+
+    private String idUsuarioLogado;
+    private Usuario usuarioLogado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_amigo);
 
-        usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios");
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        usuarioRef = firebaseRef.child("usuarios");
+        seguidoresRef = firebaseRef.child("seguidores");
+        idUsuarioLogado = UsuarioFirebase.getIdentificadorUsuario();
 
         inicializarComponentes();
 
@@ -61,12 +77,89 @@ public class PerfilAmigoActivity extends AppCompatActivity {
 
             }
         }
+
+    }
+
+    private void recuperarDadosUsuarioLogado() {
+        usuarioLogadoRef = usuarioRef.child(idUsuarioLogado);
+        usuarioLogadoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usuarioLogado = snapshot.getValue(Usuario.class);
+
+                verificaSegueUsuarioAmigo();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void verificaSegueUsuarioAmigo() {
+        DatabaseReference seguidorRef = seguidoresRef
+                .child(idUsuarioLogado)
+                .child(usuarioSelecionado.getId());
+
+        seguidorRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Log.i("dadosUsuario", ": Seguindo");
+                            habilitarBotaoSeguir(true);
+                        } else {
+                            Log.i("dadosUsuario", ": seguir");
+                            habilitarBotaoSeguir(false);
+
+                            buttonAcaoPerfil.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    salvarSeguidor(usuarioLogado, usuarioSelecionado);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                }
+        );
+    }
+
+    private void habilitarBotaoSeguir(boolean segueUsuario) {
+        if (segueUsuario) {
+            buttonAcaoPerfil.setText("Seguindo");
+        } else {
+            buttonAcaoPerfil.setText("Seguir");
+        }
+    }
+
+    private void salvarSeguidor(Usuario uLogado, Usuario uAmigo) {
+
+        HashMap<String, Object> dadosAmigo = new HashMap<>();
+        dadosAmigo.put("nome", uAmigo.getNome());
+        dadosAmigo.put("caminhoFoto", uAmigo.getCaminhoFoto());
+
+        DatabaseReference seguidorRef = seguidoresRef
+                .child(uLogado.getId())
+                .child(uAmigo.getId());
+
+        seguidorRef.setValue(dadosAmigo);
+
+        buttonAcaoPerfil.setText("Seguindo");
+        buttonAcaoPerfil.setOnClickListener(null);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         recuperarDadosPerfilAmigo();
+        recuperarDadosUsuarioLogado();
     }
 
     @Override
@@ -83,7 +176,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Usuario usuario = snapshot.getValue(Usuario.class);
 
-                String postagens = String.valueOf (usuario.getPostagens());
+                String postagens = String.valueOf(usuario.getPostagens());
                 String seguindo = String.valueOf(usuario.getSeguindo());
                 String seguidores = String.valueOf(usuario.getSeguidores());
 
@@ -102,7 +195,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
 
     private void inicializarComponentes() {
         buttonAcaoPerfil = findViewById(R.id.buttonAcaoPerfil);
-        buttonAcaoPerfil.setText("Seguir");
+        buttonAcaoPerfil.setText("Carregando...");
         imagePerfil = findViewById(R.id.imagePerfil);
         textNome = findViewById(R.id.textNome);
         textPublicacoes = findViewById(R.id.textPublicacoes);
