@@ -153,6 +153,21 @@ public class PerfilAmigoActivity extends AppCompatActivity {
         buttonAcaoPerfil.setText("Seguindo");
         buttonAcaoPerfil.setOnClickListener(null);
 
+        int seguindo = uLogado.getSeguindo() + 1;
+        HashMap<String, Object> dadosSeguindo = new HashMap<>();
+        dadosSeguindo.put("seguindo", seguindo);
+
+        DatabaseReference usuarioSeguindo = usuarioRef
+                .child(uLogado.getId());
+        usuarioSeguindo.updateChildren(dadosSeguindo);
+
+        int seguidores = uAmigo.getSeguidores() + 1;
+        HashMap<String, Object> dadosSeguidores = new HashMap<>();
+        dadosSeguidores.put("seguidores", seguidores);
+
+        DatabaseReference usuarioSeguidores = usuarioRef
+                .child(uAmigo.getId());
+        usuarioSeguidores.updateChildren(dadosSeguidores);
     }
 
     @Override
