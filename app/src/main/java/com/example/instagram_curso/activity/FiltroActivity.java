@@ -24,6 +24,7 @@ import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.utils.ThumbnailItem;
 import com.zomato.photofilters.utils.ThumbnailsManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FiltroActivity extends AppCompatActivity {
@@ -47,6 +48,11 @@ public class FiltroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro);
 
+        listaFiltros = new ArrayList<>();
+
+        imageFotoEscolhida = findViewById(R.id.imageFotoEscolhida);
+        recyclerFiltros = findViewById(R.id.recyclerFiltros);
+
         Toolbar toolbar = findViewById(R.id.toolbarFiltro);
         toolbar.setTitle("Filtros");
         setSupportActionBar(toolbar);
@@ -54,8 +60,6 @@ public class FiltroActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
 
-        imageFotoEscolhida = findViewById(R.id.imageFotoEscolhida);
-        recyclerFiltros = findViewById(R.id.recyclerFiltros);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -68,7 +72,6 @@ public class FiltroActivity extends AppCompatActivity {
             recyclerFiltros.setLayoutManager(layoutManager);
             recyclerFiltros.setAdapter(adapterMiniaturas);
 
-            //Adiciona evento de clique no recyclerview
             recyclerFiltros.addOnItemTouchListener(
                     new RecyclerItemClickListener(
                             getApplicationContext(),
@@ -97,27 +100,20 @@ public class FiltroActivity extends AppCompatActivity {
                             }
                     )
             );
-
             recuperarFiltros();
-
         }
-
     }
 
     private void recuperarFiltros() {
 
-
-        //Limpar itens
         ThumbnailsManager.clearThumbs();
         listaFiltros.clear();
 
-        //Configurar filtro normal
         ThumbnailItem item = new ThumbnailItem();
         item.image = imagem;
         item.filterName = "Normal";
         ThumbnailsManager.addThumb( item );
 
-        //Lista todos os filtros
         List<Filter> filtros = FilterPack.getFilterPack(getApplicationContext());
         for (Filter filtro: filtros ){
 

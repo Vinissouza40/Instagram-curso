@@ -36,17 +36,7 @@ public class PostagemFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PostagemFragment newInstance(String param1, String param2) {
-        PostagemFragment fragment = new PostagemFragment();
 
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,8 +72,10 @@ public class PostagemFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,  Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == getActivity().RESULT_OK) {
