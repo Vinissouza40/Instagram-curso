@@ -182,7 +182,7 @@ public class FiltroActivity extends AppCompatActivity {
         byte[] dadosImagem = baos.toByteArray();
 
         StorageReference storageRef = ConfiguracaoFirebase.getFirebaseStorage();
-        final StorageReference imagemRef = storageRef
+        StorageReference imagemRef = storageRef
                 .child("imagens")
                 .child("postagens")
                 .child(postagem.getId() + ".jpeg");
@@ -200,15 +200,14 @@ public class FiltroActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         Uri url = task.getResult();
-                        postagem.setCaminhoFoto(url.toString());
+                        postagem.setCaminhoFoto( url.toString() );
+
+                        if (postagem.salvar()){
+                            Toast.makeText(FiltroActivity.this, "Sucesso ao salvar postagem!!!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                     }
                 });
-
-                if (postagem.salvar()){
-                    Toast.makeText(FiltroActivity.this, "Sucesso ao salvar postagem!!!", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-
 
             }
         });
