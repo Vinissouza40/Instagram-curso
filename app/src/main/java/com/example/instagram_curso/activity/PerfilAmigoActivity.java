@@ -110,7 +110,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
                 .diskCacheFileCount(100)
                 .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .build();
-        ImageLoader.getInstance().init( config );
+        ImageLoader.getInstance().init(config);
 
     }
 
@@ -129,9 +129,6 @@ public class PerfilAmigoActivity extends AppCompatActivity {
                     urlFotos.add(postagem.getCaminhoFoto());
                     //Log.i("postagem", "url:" + postagem.getCaminhoFoto() );
                 }
-
-                int qtdePostagem = urlFotos.size();
-                textPublicacoes.setText( String.valueOf(qtdePostagem) );
 
                 adapterGrid = new AdapterGrid(getApplicationContext(), R.layout.grid_postagem, urlFotos);
                 gridViewPerfil.setAdapter(adapterGrid);
@@ -255,11 +252,11 @@ public class PerfilAmigoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Usuario usuario = snapshot.getValue(Usuario.class);
 
-                //String postagens = String.valueOf(usuario.getPostagens());
+                String postagens = String.valueOf(usuario.getPostagens());
                 String seguindo = String.valueOf(usuario.getSeguindo());
                 String seguidores = String.valueOf(usuario.getSeguidores());
 
-                //textPublicacoes.setText(postagens);
+                textPublicacoes.setText(postagens);
                 textSeguidores.setText(seguidores);
                 textSeguindo.setText(seguindo);
             }
