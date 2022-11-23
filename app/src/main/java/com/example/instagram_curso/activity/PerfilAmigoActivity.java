@@ -22,8 +22,9 @@ import com.example.instagram_curso.model.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -39,6 +40,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
     private Button buttonAcaoPerfil;
     private TextView textNome;
     private CircleImageView imagePerfil;
+    private TextView textPublicacoes, textSeguidores, textSeguindo;
     private GridView gridViewPerfil;
     private AdapterGrid adapterGrid;
 
@@ -49,7 +51,6 @@ public class PerfilAmigoActivity extends AppCompatActivity {
     private DatabaseReference seguidoresRef;
     private DatabaseReference postagensUsuarioRef;
     private ValueEventListener valueEventListenerPerfilAmigo;
-    private TextView textPublicacoes, textSeguidores, textSeguindo;
 
     private String idUsuarioLogado;
     private Usuario usuarioLogado;
@@ -67,7 +68,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-        Toolbar toolbar = findViewById(R.id.toolbarPerfilUser);
+        Toolbar toolbar = findViewById(R.id.toolbarPerfilUsuario);
         toolbar.setTitle("Perfil");
         setSupportActionBar(toolbar);
 
@@ -99,13 +100,17 @@ public class PerfilAmigoActivity extends AppCompatActivity {
 
     }
 
-    public void inicializarImageLoader(){
+    public void inicializarImageLoader() {
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration
                 .Builder(this)
+                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024)
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCacheFileCount(100)
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .build();
-
-        ImageLoader.getInstance().init(config);
+        ImageLoader.getInstance().init( config );
 
     }
 
@@ -114,6 +119,10 @@ public class PerfilAmigoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                int tamanhoGrid = getResources().getDisplayMetrics().widthPixels;
+                int tamanhoImagem = tamanhoGrid / 3;
+                gridViewPerfil.setColumnWidth(tamanhoImagem);
+
                 List<String> urlFotos = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Postagem postagem = ds.getValue(Postagem.class);
@@ -121,12 +130,11 @@ public class PerfilAmigoActivity extends AppCompatActivity {
                     //Log.i("postagem", "url:" + postagem.getCaminhoFoto() );
                 }
 
-                int qtdPostagem = urlFotos.size();
-                textPublicacoes.setText(String.valueOf(qtdPostagem));
+                int qtdePostagem = urlFotos.size();
+                textPublicacoes.setText( String.valueOf(qtdePostagem) );
 
-                adapterGrid = new AdapterGrid(getApplicationContext(), R.layout.grid_postagem, urlFotos );
+                adapterGrid = new AdapterGrid(getApplicationContext(), R.layout.grid_postagem, urlFotos);
                 gridViewPerfil.setAdapter(adapterGrid);
-
             }
 
             @Override
@@ -247,11 +255,11 @@ public class PerfilAmigoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Usuario usuario = snapshot.getValue(Usuario.class);
 
-                String postagens = String.valueOf(usuario.getPostagens());
+                //String postagens = String.valueOf(usuario.getPostagens());
                 String seguindo = String.valueOf(usuario.getSeguindo());
                 String seguidores = String.valueOf(usuario.getSeguidores());
 
-                textPublicacoes.setText(postagens);
+                //textPublicacoes.setText(postagens);
                 textSeguidores.setText(seguidores);
                 textSeguindo.setText(seguindo);
             }
@@ -270,7 +278,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
         imagePerfil = findViewById(R.id.imagePerfil);
         gridViewPerfil = findViewById(R.id.grifViewPerfil);
         textNome = findViewById(R.id.textNome);
-        textPublicacoes = findViewById(R.id.textPublicacoes);
+        textPublicacoes = findViewById(R.id.textViewPublicacoes);
         textSeguidores = findViewById(R.id.textSeguidores);
         textSeguindo = findViewById(R.id.textSeguindo);
     }
