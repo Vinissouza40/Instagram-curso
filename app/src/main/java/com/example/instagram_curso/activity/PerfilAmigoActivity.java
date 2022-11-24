@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PerfilAmigoActivity extends AppCompatActivity {
 
     private Usuario usuarioSelecionado;
+    private Usuario usuarioLogado;
     private Button buttonAcaoPerfil;
     private TextView textNome;
     private CircleImageView imagePerfil;
@@ -53,7 +56,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerPerfilAmigo;
 
     private String idUsuarioLogado;
-    private Usuario usuarioLogado;
+    private List<Postagem> postagens;
 
 
     @Override
@@ -98,6 +101,18 @@ public class PerfilAmigoActivity extends AppCompatActivity {
 
         carregarFotosPostagem();
 
+        gridViewPerfil.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Postagem postagem = postagens.get(position);
+                Intent i = new Intent(getApplicationContext(), VisualizarPostagemActivity.class);
+                i.putExtra("postagem", postagem);
+                i.putExtra("usuario", usuarioSelecionado);
+
+                startActivity(i);
+            }
+        });
+
     }
 
     public void inicializarImageLoader() {
@@ -115,6 +130,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
     }
 
     public void carregarFotosPostagem() {
+        postagens = new ArrayList<>();
         postagensUsuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -126,6 +142,7 @@ public class PerfilAmigoActivity extends AppCompatActivity {
                 List<String> urlFotos = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Postagem postagem = ds.getValue(Postagem.class);
+                    postagens.add(postagem);
                     urlFotos.add(postagem.getCaminhoFoto());
                     //Log.i("postagem", "url:" + postagem.getCaminhoFoto() );
                 }

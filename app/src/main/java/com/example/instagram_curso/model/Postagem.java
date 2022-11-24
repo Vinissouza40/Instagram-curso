@@ -3,7 +3,9 @@ package com.example.instagram_curso.model;
 import com.example.instagram_curso.config.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
-public class Postagem {
+import java.io.Serializable;
+
+public class Postagem implements Serializable {
 
     private String id;
     private String idUsuario;
